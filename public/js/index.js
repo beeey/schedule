@@ -91760,7 +91760,8 @@ var Calendar = function Calendar() {
               return fetch('api/events', {
                 method: 'get',
                 headers: {
-                  "Content-Type": "application/json; charset=utf-8"
+                  "Content-Type": "application/json; charset=utf-8",
+                  "X-Requested-With": 'XMLHttpRequest'
                 }
               });
 
@@ -91857,11 +91858,11 @@ var ScheduleDialog = function ScheduleDialog(_ref) {
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onClick: onCancel,
     color: "primary"
-  }, "Disagree"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "\u30AD\u30E3\u30F3\u30BB\u30EB"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onClick: onOk,
     color: "primary",
     autoFocus: true
-  }, "Agree"))));
+  }, "\u4FDD\u5B58"))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ScheduleDialog);

@@ -20,7 +20,8 @@ const Calendar = () => {
             const response = await fetch('api/events', {
                 method: 'get',
                 headers: {
-                    "Content-Type": "application/json; charset=utf-8"
+                    "Content-Type": "application/json; charset=utf-8",
+                    "X-Requested-With": 'XMLHttpRequest',
                 },
             });
             const { data } = await response.json();

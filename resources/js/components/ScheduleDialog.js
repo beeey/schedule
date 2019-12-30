@@ -35,10 +35,10 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onCancel} color="primary">
-                        Disagree
+                        キャンセル
                     </Button>
                     <Button onClick={onOk} color="primary" autoFocus>
-                        Agree
+                        保存
                     </Button>
                 </DialogActions>
             </Dialog>
