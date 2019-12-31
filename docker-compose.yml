@@ -22,7 +22,9 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE:
+      MYSQL_DATABASE: laravel
+    ports:
+      - ${EXTERNAL_MYSQL_PORT:-3306}:3306
 
   redis:
     image: redis:latest
