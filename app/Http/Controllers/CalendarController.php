@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -31,7 +32,11 @@ class CalendarController extends Controller
 
     public function store(Request $request)
     {
+        try {
 
+        } catch (Exception $e) {
+
+        }
     }
 
     public function update(Request $request)
