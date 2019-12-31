@@ -14,6 +14,8 @@ class CreateScheduleUsersTable extends Migration
     public function up()
     {
         Schema::create('schedule_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('schedule_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');

@@ -22,7 +22,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: laravel
+      MYSQL_DATABASE:
 
   redis:
     image: redis:latest
