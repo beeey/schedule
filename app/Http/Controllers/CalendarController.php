@@ -19,7 +19,7 @@ class CalendarController extends Controller
         $this->response = $responseFactory;
     }
 
-    public function create(Request $request)
+    public function get(Request $request)
     {
         return $this->response->json(['data' => [
             ['title' => '仕事', 'start' => '2020-01-01 00:00:00', 'end' => '2020-01-01 02:00:00'],
@@ -27,6 +27,20 @@ class CalendarController extends Controller
             ['title' => '仕事', 'start' => '2020-01-03 02:00:00', 'end' => '2020-01-03 04:00:00'],
             ['title' => '仕事', 'start' => '2020-01-04 03:00:00', 'end' => '2020-01-04 05:00:00'],
         ]]);
+    }
+
+    public function store(Request $request)
+    {
 
     }
- }
+
+    public function update(Request $request)
+    {
+
+    }
+
+    public function delete(Request $request)
+    {
+
+    }
+}

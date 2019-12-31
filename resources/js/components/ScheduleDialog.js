@@ -4,16 +4,17 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import styled from 'styled-components';
 
 const ScheduleDialog = ({ open, onOk, onCancel }) => {
+
+    const [error, setError] = useState(false);
 
     useEffect(() => {
 
     }, []);
-
     return (
         <div>
             <Dialog
@@ -22,16 +23,47 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
             >
                 <DialogTitle>予定を編集</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DateTime>
                         <TextField
                             id="date"
+                            label="日付"
                             type="date"
                             defaultValue="2017-05-24"
                             InputLabelProps={{
                                 shrink: true,
                             }}
                         />
-                    </DialogContentText>
+                    </DateTime>
+                    <DateTime>
+                        <TextField
+                            id="time"
+                            label="時間"
+                            type="time"
+                            defaultValue="07:30"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </DateTime>
+                    <form>
+                        <ScheduleContent>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="タイトル"
+                                variant="outlined"
+                            />
+                        </ScheduleContent>
+                        <ScheduleContent>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="内容"
+                                multiline
+                                rows="4"
+                                variant="outlined"
+                            />
+                        </ScheduleContent>
+                    </form>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onCancel} color="primary">
@@ -44,6 +76,16 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
             </Dialog>
         </div>
     );
-}
+};
 
 export default ScheduleDialog;
+
+const DateTime = styled.div`
+    display: inline-block;
+    padding: 5px;
+`;
+
+const ScheduleContent = styled.div`
+    display: block;
+    padding: 5px;
+`;
