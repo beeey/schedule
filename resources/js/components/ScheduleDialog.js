@@ -13,7 +13,9 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-
+        (async () => {
+            const response = await fetch('')
+        })();
     }, []);
     return (
         <div>
@@ -37,7 +39,18 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                     <DateTime>
                         <TextField
                             id="time"
-                            label="時間"
+                            label="開始時間"
+                            type="time"
+                            defaultValue="07:30"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </DateTime>
+                    <DateTime>
+                        <TextField
+                            id="time"
+                            label="終了時間"
                             type="time"
                             defaultValue="07:30"
                             InputLabelProps={{
