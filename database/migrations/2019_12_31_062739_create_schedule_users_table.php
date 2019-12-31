@@ -16,10 +16,10 @@ class CreateScheduleUsersTable extends Migration
         Schema::create('schedule_user', function (Blueprint $table) {
             $table->foreign('user_id')
                 ->references('id')
-                ->on('user');
+                ->on('users');
             $table->foreign('schedule_id')
                 ->references('id')
-                ->on('schedule');
+                ->on('schedules');
             $table->integer('author_id');
             $table->unique(['user_id', 'schedule_id']);
         });
