@@ -17,7 +17,7 @@ const Calendar = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch('api/events', {
+            const response = await fetch('api/schedules', {
                 method: 'get',
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
@@ -27,8 +27,8 @@ const Calendar = () => {
             const { data } = await response.json();
             setEvents(data.map((event) => ({
                 ...event,
-                start: moment(event.start).toDate(),
-                end: moment(event.end).toDate()
+                start: moment(event.starts_at).toDate(),
+                end: moment(event.ends_at).toDate()
             })));
         })();
     }, []);
