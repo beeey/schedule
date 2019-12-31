@@ -10,4 +10,11 @@ class Schedule extends Model
     use SoftDeletes;
 
     protected $table = 'schedules';
+
+    protected $with = 'users';
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

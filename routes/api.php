@@ -13,5 +13,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('events', 'CalendarController@get');
+    Route::get('schedule', 'CalendarController@index');
+    Route::post('schedule', 'CalendarController@store');
+    Route::put('schedule/{schedule}', 'CalendarController@update');
+    Route::delete('schedule', 'CalendarController@delete');
 });
