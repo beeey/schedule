@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,16 +7,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
+import { formatPHPDatetimeStringToDatetimeLocal } from "../utils/formatters";
 
-const ScheduleDialog = ({ open, onOk, onCancel }) => {
+const ScheduleDialog = ({ open, onOk, onCancel, schedule}) => {
 
     const [error, setError] = useState(false);
+    const [startsAt, setStartsAt] = useState(formatPHPDatetimeStringToDatetimeLocal(schedule.starts_at));
+    const [endsAt, setEndsAt] = useState(formatPHPDatetimeStringToDatetimeLocal(schedule.ends_at));
 
     useEffect(() => {
-        (async () => {
-            const response = await fetch('')
-        })();
     }, []);
+
     return (
         <div>
             <Dialog
@@ -27,10 +28,10 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                 <DialogContent>
                     <DateTime>
                         <TextField
-                            id="date"
-                            label="日付"
-                            type="date"
-                            defaultValue="2017-05-24"
+                            id="datetime-local"
+                            label="開始"
+                            type="datetime-local"
+                            defaultValue={startsAt}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -38,21 +39,10 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                     </DateTime>
                     <DateTime>
                         <TextField
-                            id="time"
-                            label="開始時間"
-                            type="time"
-                            defaultValue="07:30"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </DateTime>
-                    <DateTime>
-                        <TextField
-                            id="time"
-                            label="終了時間"
-                            type="time"
-                            defaultValue="07:30"
+                            id="datetime-local"
+                            label="終了"
+                            type="datetime-local"
+                            defaultValue={endsAt}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -64,6 +54,7 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                                 required
                                 id="outlined-required"
                                 label="タイトル"
+                                value={schedule.title}
                                 variant="outlined"
                             />
                         </ScheduleContent>
@@ -73,6 +64,7 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                                 label="内容"
                                 multiline
                                 rows="4"
+                                value={schedule.content}
                                 variant="outlined"
                             />
                         </ScheduleContent>
@@ -82,7 +74,7 @@ const ScheduleDialog = ({ open, onOk, onCancel }) => {
                     <Button onClick={onCancel} color="primary">
                         キャンセル
                     </Button>
-                    <Button onClick={onOk} color="primary" autoFocus>
+                    <Button onClick={onOk} color="primary">
                         保存
                     </Button>
                 </DialogActions>

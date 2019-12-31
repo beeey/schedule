@@ -1,19 +1,24 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo } from 'react';
 import moment from 'moment';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import ScheduleDialog from "./ScheduleDialog";
+import { formatSchedulesForCalendar } from "../utils/formatters";
 
 const localizer = momentLocalizer(moment);
 
 const Calendar = () => {
-    const [events, setEvents] = useState([]);
+    const [schedules, setSchedules] = useState([]);
+    const [openedSchedule, setOpenedSchedule] = useState(null);
     const [open, setOpen] = useState(false);
     const onOk = useCallback(() => {
-        setOpen(false)
+        setOpen(false);
+        setOpenedSchedule(null);
     }, []);
     const onCancel = useCallback(() => {
-        setOpen(false)
+        setOpen(false);
+        setOpenedSchedule(null);
     }, []);
+    const formattedSchedules = useMemo(() => formatSchedulesForCalendar(schedules), [schedules]);
 
     useEffect(() => {
         (async () => {
@@ -25,11 +30,7 @@ const Calendar = () => {
                 },
             });
             const { data } = await response.json();
-            setEvents(data.map((event) => ({
-                ...event,
-                start: moment(event.starts_at).toDate(),
-                end: moment(event.ends_at).toDate()
-            })));
+            setSchedules(data);
         })();
     }, []);
 
@@ -37,19 +38,21 @@ const Calendar = () => {
         <div>
             <BigCalendar
                 localizer={localizer}
-                events={events}
+                events={formattedSchedules}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 500 }}
-                onDoubleClickEvent={(event) => {
-                    setOpen(true)
+                onDoubleClickEvent={(formattedSchedule) => {
+                    setOpen(true);
+                    setOpenedSchedule(formattedSchedule.resource);
                 }}
             />
-            <ScheduleDialog
+            {openedSchedule && <ScheduleDialog
                 open={open}
                 onOk={onOk}
                 onCancel={onCancel}
-            />
+                schedule={openedSchedule}
+            />}
         </div>
     );
 }
