@@ -20,11 +20,18 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
         if (!title) {
             return 'タイトルは必須です';
         }
-        if (title.lenght < 30) {
+        if (title.length > 30) {
             return 'タイトルは30文字以内で入力してください。';
         }
         return '';
     }, [title]);
+    const dateTimeErrorText = useMemo(() => {
+        console.log(startsAt, endsAt);
+        if (startsAt > endsAt) {
+            return '終了時間が開始時間よりも前になっています。';
+        }
+        return '';
+    }, [startsAt, endsAt]);
 
     const onOk = useCallback(() => {
         const postSchedule = {
@@ -63,10 +70,13 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
                 <DialogContent>
                     <DateTime>
                         <TextField
+                            error={!!dateTimeErrorText}
+                            required={true}
                             id="datetime-local"
                             label="開始"
                             type="datetime-local"
                             defaultValue={startsAt}
+                            helperText={dateTimeErrorText}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -77,9 +87,12 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
                     </DateTime>
                     <DateTime>
                         <TextField
+                            error={!!dateTimeErrorText}
+                            required={true}
                             id="datetime-local"
                             label="終了"
                             type="datetime-local"
+                            helperText={dateTimeErrorText}
                             defaultValue={endsAt}
                             InputLabelProps={{
                                 shrink: true,
@@ -93,7 +106,7 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
                         <ScheduleContent>
                             <TextField
                                 error={!!titleErrorText}
-                                required
+                                required={true}
                                 id="outlined-required"
                                 label="タイトル"
                                 defaultValue={schedule.title}
@@ -126,7 +139,7 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
                     <Button
                         onClick={onOk}
                         color="primary"
-                        disabled={!!titleErrorText}
+                        disabled={!!titleErrorText || !!dateTimeErrorText}
                     >
                         保存
                     </Button>
