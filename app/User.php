@@ -32,13 +32,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = 'schedules';
+    protected $with = ['schedules'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function schedules() :BelongsToMany
     {
-        return $this->belongsToMany(Schedule::class);
+        return $this->belongsToMany(Schedule::class, 'schedule_user');
     }
 }

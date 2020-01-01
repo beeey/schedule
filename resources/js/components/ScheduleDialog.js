@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
 import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,11 +9,28 @@ import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import { formatPHPDatetimeStringToDatetimeLocal } from "../utils/formatters";
 
-const ScheduleDialog = ({ open, onOk, onCancel, schedule}) => {
+const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
 
     const [error, setError] = useState(false);
+    const [title, setTitle] = useState(schedule.title);
+    const [content, setContent] = useState(schedule.content);
     const [startsAt, setStartsAt] = useState(formatPHPDatetimeStringToDatetimeLocal(schedule.starts_at));
     const [endsAt, setEndsAt] = useState(formatPHPDatetimeStringToDatetimeLocal(schedule.ends_at));
+
+    const onOk = useCallback(() => {
+        (async () => {
+            const response = await fetch(`api/schedules/${schedule.id}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "X-Requested-With": 'XMLHttpRequest',
+                },
+                body: JSON.stringify(schedule)
+            });
+            const { data } = await response.json();
+        })();
+        parentOnOk();
+    }, [parentOnOk]);
 
     useEffect(() => {
     }, []);
@@ -54,7 +71,7 @@ const ScheduleDialog = ({ open, onOk, onCancel, schedule}) => {
                                 required
                                 id="outlined-required"
                                 label="タイトル"
-                                value={schedule.title}
+                                defaultValue={schedule.title}
                                 variant="outlined"
                             />
                         </ScheduleContent>
@@ -64,7 +81,7 @@ const ScheduleDialog = ({ open, onOk, onCancel, schedule}) => {
                                 label="内容"
                                 multiline
                                 rows="4"
-                                value={schedule.content}
+                                defaultValue={schedule.content}
                                 variant="outlined"
                             />
                         </ScheduleContent>

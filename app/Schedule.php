@@ -12,13 +12,13 @@ class Schedule extends Model
 
     protected $table = 'schedules';
 
-    protected $with = 'users';
+    //protected $with = ['users'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users() :BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'schedule_user');
     }
 }
