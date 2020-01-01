@@ -12,7 +12,7 @@ class Schedule extends Model
 
     protected $table = 'schedules';
 
-    //protected $with = ['users'];
+    protected $with = ['users'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

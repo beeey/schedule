@@ -23,7 +23,7 @@ class CreateScheduleUsersTable extends Migration
                 ->references('id')
                 ->on('schedules');
             $table->integer('author_id')->nullable();
-            $table->unique(['user_id', 'schedule_id']);
+            //$table->unique(['user_id', 'schedule_id']);
         });
     }
 

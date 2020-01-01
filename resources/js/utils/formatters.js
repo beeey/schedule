@@ -19,5 +19,5 @@ export const formatPHPDatetimeStringToDatetimeLocal = (phpDatetimeString) => {
 };
 
 export const formatDatetimeLocalToPHPDatetimeString = (datetimeLocal) => {
-    return moment(datetimeLocal).format('YYYY-MM-DD HH:II:SS');
+    return moment(datetimeLocal).format('YYYY-MM-DD HH:MM:SS');
 };

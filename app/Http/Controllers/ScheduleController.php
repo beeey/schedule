@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
 {
@@ -35,7 +36,7 @@ class ScheduleController extends Controller
      */
     public function index(Request $request) :AnonymousResourceCollection
     {
-        return ScheduleResource::collection(Schedule::with('users')->get());
+        return ScheduleResource::collection(Schedule::all());
     }
 
     /**

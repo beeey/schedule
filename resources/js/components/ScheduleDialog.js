@@ -7,17 +7,32 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
-import { formatPHPDatetimeStringToDatetimeLocal } from "../utils/formatters";
+import { formatPHPDatetimeStringToDatetimeLocal, formatDatetimeLocalToPHPDatetimeString } from "../utils/formatters";
 
-const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
+const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateComplete }) => {
 
-    const [error, setError] = useState(false);
     const [title, setTitle] = useState(schedule.title);
     const [content, setContent] = useState(schedule.content);
     const [startsAt, setStartsAt] = useState(formatPHPDatetimeStringToDatetimeLocal(schedule.starts_at));
     const [endsAt, setEndsAt] = useState(formatPHPDatetimeStringToDatetimeLocal(schedule.ends_at));
 
+    const titleErrorText = useMemo(() => {
+        if (!title) {
+            return 'タイトルは必須です';
+        }
+        if (title.lenght < 30) {
+            return 'タイトルは30文字以内で入力してください。';
+        }
+        return '';
+    }, [title]);
+
     const onOk = useCallback(() => {
+        const postSchedule = {
+            title: title,
+            content: content,
+            starts_at: startsAt,
+            ends_at: endsAt
+        };
         (async () => {
             const response = await fetch(`api/schedules/${schedule.id}`, {
                 method: 'PUT',
@@ -25,12 +40,15 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
                     "Content-Type": "application/json; charset=utf-8",
                     "X-Requested-With": 'XMLHttpRequest',
                 },
-                body: JSON.stringify(schedule)
+                body: JSON.stringify(postSchedule)
             });
             const { data } = await response.json();
+            if (onUpdateComplete) {
+                onUpdateComplete(data);
+            }
         })();
         parentOnOk();
-    }, [parentOnOk]);
+    }, [parentOnOk, title, content, startsAt, endsAt]);
 
     useEffect(() => {
     }, []);
@@ -52,6 +70,9 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            onChange={(event) => {
+                                setStartsAt(formatDatetimeLocalToPHPDatetimeString(event.target.value));
+                            }}
                         />
                     </DateTime>
                     <DateTime>
@@ -63,16 +84,24 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            onChange={(event) => {
+                                setEndsAt(formatDatetimeLocalToPHPDatetimeString(event.target.value));
+                            }}
                         />
                     </DateTime>
                     <form>
                         <ScheduleContent>
                             <TextField
+                                error={!!titleErrorText}
                                 required
                                 id="outlined-required"
                                 label="タイトル"
                                 defaultValue={schedule.title}
                                 variant="outlined"
+                                helperText={titleErrorText}
+                                onChange={(event) => {
+                                    setTitle(event.target.value);
+                                }}
                             />
                         </ScheduleContent>
                         <ScheduleContent>
@@ -83,6 +112,9 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
                                 rows="4"
                                 defaultValue={schedule.content}
                                 variant="outlined"
+                                onChange={(event) => {
+                                    setContent(event.target.value);
+                                }}
                             />
                         </ScheduleContent>
                     </form>
@@ -91,7 +123,11 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule}) => {
                     <Button onClick={onCancel} color="primary">
                         キャンセル
                     </Button>
-                    <Button onClick={onOk} color="primary">
+                    <Button
+                        onClick={onOk}
+                        color="primary"
+                        disabled={!!titleErrorText}
+                    >
                         保存
                     </Button>
                 </DialogActions>

@@ -32,8 +32,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['schedules'];
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

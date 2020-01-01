@@ -52,6 +52,11 @@ const Calendar = () => {
                 onOk={onOk}
                 onCancel={onCancel}
                 schedule={openedSchedule}
+                onUpdateComplete={(updatedSchedule) => {
+                    setSchedules(schedules.map((schedule) => {
+                        return schedule.id === updatedSchedule.id ? updatedSchedule : schedule;
+                    }));
+                }}
             />}
         </div>
     );
