@@ -8,7 +8,6 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
@@ -47,6 +46,28 @@ class ScheduleController extends Controller
      */
     public function store(Request $request) :ScheduleResource
     {
+        $validator = Validator::make($request->only('starts_at', 'ends_at', 'title', 'content'),
+            [
+                'starts_at' => [
+                    'required',
+                    'date_format',
+                ],
+                'ends_at' => [
+                    'required',
+                    'date_format'
+                ],
+                'title' => [
+                    'required',
+                    'max:30'
+                ],
+                'content' => [
+                    'max:200'
+                ]
+            ]
+        );
+
+        $validator->validate();
+
         $schedule = new Schedule();
         $schedule->forceFill($request->only('starts_at', 'ends_at', 'title', 'content'));
         $schedule->save();
@@ -63,6 +84,28 @@ class ScheduleController extends Controller
      */
     public function update(Schedule $schedule, Request $request) :ScheduleResource
     {
+        $validator = Validator::make($request->only('starts_at', 'ends_at', 'title', 'content'),
+            [
+                'starts_at' => [
+                    'required',
+                    'date_format',
+                ],
+                'ends_at' => [
+                    'required',
+                    'date_format'
+                ],
+                'title' => [
+                    'required',
+                    'max:30'
+                ],
+                'content' => [
+                    'max:200'
+                ]
+            ]
+        );
+
+        $validator->validate();
+
         $schedule->forceFill($request->only('starts_at', 'ends_at', 'title', 'content'));
         $schedule->save();
         $schedule->users()->attach(Auth::user());

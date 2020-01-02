@@ -20,13 +20,18 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
         if (!title) {
             return 'タイトルは必須です';
         }
-        if (title.length > 30) {
+        if (title.length >= 30) {
             return 'タイトルは30文字以内で入力してください。';
         }
         return '';
     }, [title]);
+    const contentErrorText = useMemo(() => {
+        if (content >= 200) {
+            return '内容は200文字以内で入力してください。';
+        }
+        return '';
+    }, [content]);
     const dateTimeErrorText = useMemo(() => {
-        console.log(startsAt, endsAt);
         if (startsAt > endsAt) {
             return '終了時間が開始時間よりも前になっています。';
         }
@@ -119,11 +124,13 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
                         </ScheduleContent>
                         <ScheduleContent>
                             <TextField
+                                error={!!contentErrorText}
                                 id="outlined-multiline-static"
                                 label="内容"
                                 multiline
                                 rows="4"
                                 defaultValue={schedule.content}
+                                helperText={contentErrorText}
                                 variant="outlined"
                                 onChange={(event) => {
                                     setContent(event.target.value);
@@ -139,7 +146,7 @@ const ScheduleDialog = ({ open, onOk: parentOnOk, onCancel, schedule, onUpdateCo
                     <Button
                         onClick={onOk}
                         color="primary"
-                        disabled={!!titleErrorText || !!dateTimeErrorText}
+                        disabled={!!titleErrorText || !!dateTimeErrorText || !!contentErrorText}
                     >
                         保存
                     </Button>
