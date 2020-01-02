@@ -23,7 +23,7 @@ class CreateScheduleUsersTable extends Migration
                 ->references('id')
                 ->on('schedules');
             $table->boolean('is_author')->default('0');
-            $table->boolean('authority')->storedAs('case when is_author then 1 else null end');
+            $table->boolean('authority')->storedAs('case when is_author then 1 else null end')->nullable();
             $table->unique(['user_id', 'schedule_id']);
             $table->unique(['schedule_id', 'authority']);
         });
