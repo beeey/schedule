@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
+    Route::get('schedules/authored', 'ScheduleController@indexOfAuthored');
+    Route::get('schedules/attending', 'ScheduleController@indexOfAttending');
     Route::get('schedules', 'ScheduleController@index');
-    Route::post('schedules/', 'ScheduleController@store');
+    Route::post('schedules', 'ScheduleController@store');
     Route::put('schedules/{schedule}', 'ScheduleController@update');
     Route::delete('schedules/{schedule}', 'ScheduleController@delete');
 });

@@ -36,7 +36,17 @@ class ScheduleController extends Controller
      */
     public function index(Request $request) :AnonymousResourceCollection
     {
-        return ScheduleResource::collection(Auth::user()->schedules);
+        return ScheduleResource::collection(Schedule::all());
+    }
+
+    public function indexOfAuthored(Request $request)
+    {
+        return ScheduleResource::collection(Auth::user()->authoredSchedules);
+    }
+
+    public function indexOfAttending(Request $request)
+    {
+        return ScheduleResource::collection(Auth::user()->attendingSchedules);
     }
 
     /**

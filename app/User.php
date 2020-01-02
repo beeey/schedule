@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,8 +36,24 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function schedules() :BelongsToMany
+    public function schedules(): BelongsToMany
     {
-        return $this->belongsToMany(Schedule::class, 'schedule_user');
+        return $this->belongsToMany(Schedule::class, 'schedule_user')->withPivot('is_author');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function authoredSchedules(): BelongsToMany
+    {
+        return $this->schedules()->wherePivot('is_author', 1);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function attendingSchedules(): BelongsToMany
+    {
+        return $this->schedules()->wherePivot('is_author', 0);
     }
 }
