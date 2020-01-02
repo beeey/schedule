@@ -97,6 +97,7 @@ class ScheduleController extends Controller
      */
     public function update(Schedule $schedule, Request $request) :ScheduleResource
     {
+        Log::debug(['test_' => $request->all()]);
         $validator = Validator::make($request->only('starts_at', 'ends_at', 'title', 'content'),
             [
                 'starts_at' => [
@@ -123,7 +124,7 @@ class ScheduleController extends Controller
 
         $schedule->forceFill($request->only('starts_at', 'ends_at', 'title', 'content'));
         $schedule->save();
-        $schedule->users()->attach(Auth::user());
+
         return new ScheduleResource($schedule);
     }
 
