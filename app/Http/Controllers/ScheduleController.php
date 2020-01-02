@@ -8,6 +8,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
@@ -35,7 +36,7 @@ class ScheduleController extends Controller
      */
     public function index(Request $request) :AnonymousResourceCollection
     {
-        return ScheduleResource::collection(Schedule::all());
+        return ScheduleResource::collection(Auth::user()->schedules);
     }
 
     /**
@@ -50,11 +51,13 @@ class ScheduleController extends Controller
             [
                 'starts_at' => [
                     'required',
-                    'date_format',
+                    'date_format:Y-m-d',
+                    'date_format:H:i'
                 ],
                 'ends_at' => [
                     'required',
-                    'date_format'
+                    'date_format:Y-m-d',
+                    'date_format:H:i'
                 ],
                 'title' => [
                     'required',
@@ -88,11 +91,13 @@ class ScheduleController extends Controller
             [
                 'starts_at' => [
                     'required',
-                    'date_format',
+                    //'date_format:Y-m-d',
+                    //'date_format:H:i'
                 ],
                 'ends_at' => [
                     'required',
-                    'date_format'
+                    //'date_format:Y-m-d',
+                    //'date_format:H:i'
                 ],
                 'title' => [
                     'required',
