@@ -65,6 +65,6 @@ class Handler extends ExceptionHandler
         if (!$request->expectsJson()) {
             throw new BadRequestHttpException('Missing X-Requested-With header.');
         }
-        return Response::json(['message' => $exception->getMessage()], 401)
+        return Response::json(['message' => $exception->getMessage()], 401);
     }
 }
