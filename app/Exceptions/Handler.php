@@ -53,18 +53,5 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
-    /**
-     *
-     * 補足 https://qiita.com/fuubit/items/fea41e173fa1bdf70736
-     * @param \Illuminate\Http\Request $request
-     * @param AuthenticationException $exception
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
-        if (!$request->expectsJson()) {
-            throw new BadRequestHttpException('Missing X-Requested-With header.');
-        }
-        return Response::json(['message' => $exception->getMessage()], 401);
-    }
+
 }

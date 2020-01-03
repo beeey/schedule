@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -39,6 +40,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \App\Http\Middleware\ForceJsonResponse::class,
             \App\Http\Middleware\VerifyXMLHttpRequest::class,
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
