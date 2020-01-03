@@ -15,7 +15,6 @@ class AcceptDebugUserId
         if (App::isLocal() && config('app.debug') && $request->hasHeader('X-Debug-User-Id') && ($user = User::find($request->header('X-Debug-User-Id')))) {
             Auth::setUser($user);
         }
-        Auth::login();
         return $next($request);
     }
 }
