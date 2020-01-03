@@ -17,3 +17,9 @@ Route::middleware('auth')->group(function () {
         return view('welcome');
     });
 });
+
+Route::middleware('guest')->group(function() {
+    Route::get('login/google', 'Auth\OAuthController@redirectToGoogle');
+    Route::get('login/google/callback', 'Auth\OAuthController@handleGoogleCallback');
+});
+
