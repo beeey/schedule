@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -61,8 +62,9 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return $request->expectsJson()
-            ? Response::json(['message' => $exception->getMessage()], 401)
-            : Redirect::guest(route('login')); // ここを変更する
+        if (!$request->expectsJson()) {
+            throw new BadRequestHttpException('Missing X-Requested-With header.');
+        }
+        return Response::json(['message' => $exception->getMessage()], 401)
     }
 }
