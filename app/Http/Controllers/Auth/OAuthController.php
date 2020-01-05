@@ -42,6 +42,11 @@ class OAuthController extends Controller
 
         if ($socialUser->exists) {
             $socialUser->save();
+            $user = User::firstOrFail([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+            ]);
+            Auth::login($user);
             return redirect('/');
         }
 

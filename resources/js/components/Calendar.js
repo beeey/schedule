@@ -24,10 +24,12 @@ const Calendar = () => {
         (async () => {
             const response = await fetch('api/schedules', {
                 method: 'get',
+                mode: 'cors',
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                     "X-Requested-With": 'XMLHttpRequest',
                 },
+                credentials: 'include'
             });
             const { data } = await response.json();
             setSchedules(data);
