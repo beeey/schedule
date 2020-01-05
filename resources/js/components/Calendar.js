@@ -31,6 +31,12 @@ const Calendar = () => {
                 },
                 credentials: 'include'
             });
+
+            if (response.status >= 400) {
+                alert(await response.text());
+                return;
+            }
+
             const { data } = await response.json();
             setSchedules(data);
         })();
