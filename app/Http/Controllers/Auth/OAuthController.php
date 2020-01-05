@@ -47,8 +47,12 @@ class OAuthController extends Controller
 
         DB::transaction(function () use ($socialUser) {
             $user = new User();
-            $user->forceFill(['name' => $socialUser->name])->save();
+            $user->forceFill([
+                'name' => $socialUser->name,
+                'email' => $socialUser->email,
+            ])->save();
             $socialUser->user()->associate($user)->save();
+            Auth::login($user);
         });
 
         return redirect('/');
